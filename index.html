@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css" />    
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      #map {
+        height: 500px;
+        width: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+        <br>
+        <button id="btnmap" class="btn" >click map</button><br><br>
+        <label for="">Lat</label>  
+        <input type="text" id="lat">    
+        <label for="">Long</label>  
+        <input type="text" id="lng">    
+        <!-- <div id="map"></div> -->
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+            
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Google map</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="map"></div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+            
+            </div>
+        </div>
+
+    </div>
+    <script
+  src="https://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>            
+
+      $(function() {
+
+        var map;    
+        var location = {lat: 13.7639978, lng: 100.5039835};
+        var marker;
+
+        function initMap() {  
+
+            var mapCanvas = document.getElementById('map');
+            var mapOption = {
+              center: location,
+              zoom: 15
+            }
+
+            map = new google.maps.Map(mapCanvas, mapOption);                     
+
+            google.maps.event.addListener(map, 'click', function(e) {
+              placeMarker(map, e.latLng);            
+            });
+
+            function placeMarker(map, location)
+            {
+              if (!marker) 
+              {
+                marker = new google.maps.Marker({
+                  position: location,                  
+                  map: map   
+                                         
+                });
+              } 
+              else 
+              {
+                marker.setPosition(location);
+              }
+
+              let lat = location.lat().toFixed(7);              
+              let lng = location.lng().toFixed(7);            
+
+              $('#lat').val(lat);
+              $('#lng').val(lng);
+            } 
+        }        
+
+        $('#btnmap').on('click', function() {                        
+            $("#myModal").modal();
+            initMap();            
+        });
+
+        //$('#myModal').draggable();
+
+      });
+
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBJmnIO6qads0NuHS7AloQDkJjIrL2-bss"
+    async defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBJmnIO6qads0NuHS7AloQDkJjIrL2-bss&callback=initMap"
+    async defer></script> -->
+    
+  </body>
+</html>
